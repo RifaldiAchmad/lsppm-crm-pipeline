@@ -48,6 +48,68 @@ Membangun sistem *End-to-End Pipeline* otomatis yang:
 
 Sistem ini menerapkan Normalisasi (3NF) pada PostgreSQL. Berikut adalah struktur utama yang dibangun:
 
+```mermaid
+erDiagram
+    profile ||--o{ sertifikat : "memiliki"
+    profile ||--o{ perpanjangan_sertifikat : "masuk_daftar_tunggu"
+    profile ||--o{ kontak : "punya_kontak"
+    referensi_institusi ||--o{ profile : "tempat_bekerja"
+    referensi_asosiasi ||--o{ referensi_skema : "mewadahi"
+    referensi_skema ||--o{ sertifikat : "diambil_sebagai"
+
+    profile {
+        bigint id PK
+        text name
+        date birth_date
+        varchar(16) nik UK
+        bigint institusi_id FK
+    }
+
+    referensi_institusi {
+        bigint id PK
+        text nama_institusi UK
+        text kategori
+    }
+
+    sertifikat {
+        bigint id PK
+        bigint peserta_id FK
+        text scheme
+        varchar serti_id
+        date publish
+        date expires
+    }
+
+    perpanjangan_sertifikat {
+        bigint id PK
+        bigint peserta_id FK
+        text scheme
+        date tanggal_ujian
+        timestamp created_at
+    }
+
+    kontak {
+        bigint id PK
+        bigint peserta_id FK
+        varchar(10) tipe_kontak
+        text nilai_kontak
+    }
+
+    referensi_asosiasi {
+        bigint id PK
+        text kode UK
+        text nama_lengkap
+        text link_kontak
+        text link_website
+    }
+
+    referensi_skema {
+        bigint id PK
+        text nama_skema UK
+        text kode_asosiasi FK
+        text link_syarat
+    }
+
 **Tabel Relasional Utama:**
 *   `profile`: Entitas asesi dengan penegakan unik `UNIQUE(name, birth_date)` dan `UNIQUE(nik)`.
 *   `sertifikat`: Menyimpan riwayat kepemilikan skema sertifikat setiap asesi.
