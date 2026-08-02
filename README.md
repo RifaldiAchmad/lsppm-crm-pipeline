@@ -175,7 +175,7 @@ Proses ini berjalan di latar belakang tanpa intervensi manual:
 │   └── templates/            # File template HTML (.html) untuk body email
 ├── requirements.txt          # Dependensi Python
 └── README.md                 # Dokumentasi Proyek
-
+```
 
 ## 🚀 Setup & Deployment Guide
 
@@ -205,6 +205,7 @@ pip install -r requirements.txt
 
 # Jalankan skrip pembersihan data
 python src/master_automated_pipeline.py
+```
 
 ### 4. Konfigurasi Google Apps Script
 1. Buka Google Sheet target pengiriman Anda.
