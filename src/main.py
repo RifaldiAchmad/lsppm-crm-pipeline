@@ -8,7 +8,7 @@ def run_pipeline():
     print("==========================================")
     
     # Konfigurasi Target
-    SHEET_NAME = "Data Blasting LSPPM-PPJKI"
+    SHEET_NAME = "Sheet Data Sertifikat"
     WORKFLOW_TAB = "Sertifikat"
     TARGET_TABLE = "sertifikat"
     
