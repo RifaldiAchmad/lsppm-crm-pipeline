@@ -175,3 +175,45 @@ Proses ini berjalan di latar belakang tanpa intervensi manual:
 │   └── templates/            # File template HTML (.html) untuk body email
 ├── requirements.txt          # Dependensi Python
 └── README.md                 # Dokumentasi Proyek
+
+## 🚀 Setup & Deployment Guide
+
+Proyek ini dirancang agar sepenuhnya berjalan di *cloud*, namun Anda bisa menjalankannya di lingkungan lokal (komputer Anda sendiri) untuk keperluan *development* dan *testing*.
+
+### 1. Kebutuhan Sistem (Prerequisites)
+*   **Python 3.9+** terinstal di komputer.
+*   Akun **Google Cloud Console** (untuk mendapatkan `service_account.json` dari Google Sheets API).
+*   Akun **Supabase** (PostgreSQL) yang sudah ter- *setup*.
+*   Akses ke **Google Apps Script** yang tertaut dengan Google Sheet target Anda.
+
+### 2. Konfigurasi Environment Variables (Python)
+Untuk menjalankan *pipeline* ETL Python, Anda tidak boleh menaruh kunci rahasia (*API Key*) secara langsung di dalam kode. 
+Gunakan *Environment Variables* atau masukkan ke dalam **GitHub Secrets** (jika menggunakan GitHub Actions):
+*   `SUPABASE_URL` = URL proyek Supabase Anda.
+*   `SUPABASE_KEY` = *Service role key* atau *Anon key* Supabase Anda.
+
+### 3. Instalasi Python (Lokal)
+Jalankan perintah ini di terminal Anda:
+```bash
+# Clone repositori ini
+git clone [https://github.com/UsernameAnda/lsppm-crm-pipeline.git](https://github.com/UsernameAnda/lsppm-crm-pipeline.git)
+cd lsppm-crm-pipeline
+
+# Instal pustaka yang dibutuhkan
+pip install -r requirements.txt
+
+# Jalankan skrip pembersihan data
+python src/master_automated_pipeline.py
+
+### 4. Konfigurasi Google Apps Script
+1. Buka Google Sheet target pengiriman Anda.
+2. Buka menu **Ekstensi > Apps Script**.
+3. Salin semua file dari folder `apps_script/` di repositori ini ke dalam *editor* Apps Script.
+4. Buka **Setelan Proyek (Ikon Roda Gigi)** di Apps Script, gulir ke bawah ke bagian **Properti Skrip**, dan tambahkan variabel rahasia:
+    * `SUPABASE_URL` = URL Supabase
+    * `SUPABASE_KEY` = *Anon key* Supabase
+    * `ADMIN_EMAIL` = Alamat email Anda untuk menerima notifikasi kegagalan sistem (*error report*).
+5. Atur *Time-driven Triggers* (Pemicu waktu) untuk menjalankan fungsi `runDailySync`, `runMorningTasks`, dan `runAfternoonTasks` sesuai jadwal yang diinginkan.
+
+---
+*Architected and Engineered by Rifaldi Achmad Faisal*
