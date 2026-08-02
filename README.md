@@ -109,6 +109,7 @@ erDiagram
         text kode_asosiasi FK
         text link_syarat
     }
+```
 
 **Tabel Relasional Utama:**
 *   `profile`: Entitas asesi dengan penegakan unik `UNIQUE(name, birth_date)` dan `UNIQUE(nik)`.
