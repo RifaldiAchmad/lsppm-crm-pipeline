@@ -10,6 +10,42 @@ Sistem ini mengekstraksi data operasional dari Spreadsheet, melakukan standarisa
 
 ## 🏗️ Architecture & Tech Stack
 
+### System Architecture Diagram
+
+```mermaid
+flowchart TD
+    subgraph Data_Source [1. Data Source]
+        GS[Google Sheets<br>Data Blasting & RCC]
+    end
+
+    subgraph ETL_Pipeline [2. Data Processing - Python]
+        Cron1([GitHub Actions<br>Cron Job]) -. trigger .-> PY[Python ETL Script<br>Data Cleansing & Match]
+        GS -- Extract Raw Data --> PY
+    end
+
+    subgraph Data_Warehouse [3. RDBMS - Supabase]
+        DB[(PostgreSQL<br>Master Database)]
+        View[[SQL Views<br>v_notifikasi_email]]
+        PY -- Load / Upsert --> DB
+        DB -. generate .-> View
+    end
+
+    subgraph Reverse_ETL [4. Data Activation - Apps Script]
+        Sync[sync.js<br>Tarik Data Terbaru]
+        Trigger([Time-driven Triggers<br>Pagi & Sore])
+        Mail[notification.js<br>HTML Templating]
+        
+        View -- Fetch Data --> Sync
+        Sync --> Trigger
+        Trigger --> Mail
+    end
+
+    subgraph Output [5. Delivery]
+        Email((Gmail API<br>Birthday & Reminder Blast))
+        Mail -- Send --> Email
+    end
+```
+
 Sistem ini 100% *Cloud-Native* dan terotomatisasi secara terjadwal (Cron Jobs).
 
 *   **Data Source & UI:** Spreadsheet Online (Input Data Operasional)
