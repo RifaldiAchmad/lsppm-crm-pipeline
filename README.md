@@ -109,14 +109,6 @@ erDiagram
         text kode_asosiasi FK
         text link_syarat
     }
-
-**Tabel Relasional Utama:**
-*   `profile`: Entitas asesi dengan penegakan unik `UNIQUE(name, birth_date)` dan `UNIQUE(nik)`.
-*   `sertifikat`: Menyimpan riwayat kepemilikan skema sertifikat setiap asesi.
-*   `referensi_institusi`: Tabel kamus yang memastikan nama perusahaan asesi bersifat tunggal/unik.
-*   `perpanjangan_sertifikat`: Berfungsi sebagai "Daftar Tunggu" asesi yang saat ini sedang dalam masa penilaian RCC (Renewal).
-*   `kontak`: Menyimpan jejak nomor telepon dan email aktif asesi.
-
 ---
 
 ## ⚙️ Workflow Automasi Harian
