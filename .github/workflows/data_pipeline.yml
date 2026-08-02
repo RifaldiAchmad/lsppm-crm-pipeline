@@ -1,1 +1,47 @@
+name: LSPPM Daily ETL Pipeline
 
+on:
+  # 1. Menjadwalkan cron job (berjalan otomatis)
+  schedule:
+    # Berjalan setiap jam 17:00 UTC (Sama dengan jam 00:00 WIB / Tengah malam)
+    # Silakan sesuaikan jamnya jika ingin berjalan di waktu lain
+    - cron: '0 17 * * *' 
+    
+  # 2. Mengizinkan eksekusi manual via tombol "Run workflow" di GitHub
+  workflow_dispatch: 
+
+jobs:
+  run-etl:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Mengambil kode dari repository lo
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Step 2: Menyiapkan environment Python
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pip' # Mempercepat build dengan menyimpan cache dependensi
+
+    # Step 3: Menginstal semua library yang dibutuhkan (pandas, gspread, supabase, dll)
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # Step 4: Membuat file JSON kredensial Google dari GitHub Secrets
+    - name: Create Google Credentials File
+      run: |
+        echo "${{ secrets.GOOGLE_CREDENTIALS_JSON }}" > service_account.json
+
+    # Step 5: Menjalankan skrip utama dengan menyisipkan Environment Variables rahasia
+    - name: Run Master ETL Pipeline
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        GOOGLE_APPLICATION_CREDENTIALS: service_account.json
+      run: |
+        python src/main.py # Ubah ke nama file python utama lo jika namanya beda
