@@ -61,7 +61,7 @@ erDiagram
         bigint id PK
         text name
         date birth_date
-        varchar(16) nik UK
+        varchar nik UK
         bigint institusi_id FK
     }
 
@@ -91,7 +91,7 @@ erDiagram
     kontak {
         bigint id PK
         bigint peserta_id FK
-        varchar(10) tipe_kontak
+        varchar tipe_kontak
         text nilai_kontak
     }
 
@@ -109,6 +109,13 @@ erDiagram
         text kode_asosiasi FK
         text link_syarat
     }
+
+**Tabel Relasional Utama:**
+*   `profile`: Entitas asesi dengan penegakan unik `UNIQUE(name, birth_date)` dan `UNIQUE(nik)`.
+*   `sertifikat`: Menyimpan riwayat kepemilikan skema sertifikat setiap asesi.
+*   `referensi_institusi`: Tabel kamus yang memastikan nama perusahaan asesi bersifat tunggal/unik.
+*   `perpanjangan_sertifikat`: Berfungsi sebagai "Daftar Tunggu" asesi yang saat ini sedang dalam masa penilaian RCC (Renewal).
+*   `kontak`: Menyimpan jejak nomor telepon dan email aktif asesi.
 ---
 
 ## ⚙️ Workflow Automasi Harian
