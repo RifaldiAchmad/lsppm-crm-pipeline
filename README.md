@@ -175,6 +175,8 @@ Proses ini berjalan di latar belakang tanpa intervensi manual:
 │   └── templates/            # File template HTML (.html) untuk body email
 ├── requirements.txt          # Dependensi Python
 └── README.md                 # Dokumentasi Proyek
+---
+
 
 ## 🚀 Setup & Deployment Guide
 
